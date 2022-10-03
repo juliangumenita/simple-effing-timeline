@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Box, Text } from "simple-effing-primitive-layout";
 import Moment from "moment/min/moment-with-locales";
 
-import EventType from "../Types/EventType";
-
 const Event = ({
   item = {},
   top,

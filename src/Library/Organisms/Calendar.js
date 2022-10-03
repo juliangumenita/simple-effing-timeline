@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text } from "simple-effing-primitive-layout";
 
-import EventType from "../Types/EventType";
 import Event from "../Molecules/Event";
 
 import Lodash from "lodash";
