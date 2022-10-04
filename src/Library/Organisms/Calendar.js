@@ -14,6 +14,10 @@ const CalendarConfiguraton = {
   radius: 5,
   border: "0.5px solid #ECF0F5",
   family: undefined,
+  legends: {
+    display: true,
+  },
+  categories: {},
 };
 
 const Calendar = ({
@@ -25,6 +29,7 @@ const Calendar = ({
 
   const [error, _error] = useState(false);
   const [months, _months] = useState([]);
+  const [hide, _hide] = useState([]);
 
   const _configuraton = { ...CalendarConfiguraton, ...configuraton };
   const _events = Lodash.sortBy(events, ["start"]);
@@ -188,56 +193,97 @@ const Calendar = ({
     }, [events]);
   }
 
+  const legends = [];
+  for (const [key, value] of Object.entries(_configuraton.categories)) {
+    legends.push({
+      key,
+      ...value,
+    });
+  }
+
   return (
-    <Box
-      border={_configuraton.border}
-      width={_configuraton.width}
-      height={_configuraton.height + 1}
-      radius={_configuraton.radius}
-      overflow="hidden"
-      {..._configuraton.wrapper}
-      style={{ overflowX: "auto" }}
-    >
-      <Box display="flex" position="relative">
-        {_transform.events.map((item, i) => {
-          return (
-            <Event
+    <Box width={_configuraton.width} {..._configuraton.wrapper}>
+      <Box
+        border={_configuraton.border}
+        height={_configuraton.height + 1}
+        radius={_configuraton.radius}
+        overflow="hidden"
+        style={{ overflowX: "auto" }}
+      >
+        <Box display="flex" position="relative">
+          {_transform.events.map((item, i) => {
+            return hide.includes(item.category) ? null : (
+              <Event
+                key={i}
+                top={item.steps * 75 <= 75 ? 75 : item.steps * 75}
+                left={pixel(_startPoint.format("YYYY-MM-") + "01", item.start)}
+                width={pixel(item.start, item.end, true)}
+                configuraton={configuraton}
+                item={item}
+              />
+            );
+          })}
+          {months.map((month, i) => (
+            <Box
               key={i}
-              top={item.steps * 75 <= 75 ? 75 : item.steps * 75}
-              left={pixel(_startPoint.format("YYYY-MM-") + "01", item.start)}
-              width={pixel(item.start, item.end, true)}
-              configuraton={configuraton}
-              item={item}
-            />
-          );
-        })}
-        {months.map((month, i) => (
-          <Box
-            key={i}
-            css="simple-effing-month-wrapper"
-            width={month.width}
-            style={{
-              minHeight: _height,
-              borderLeftWidth: 0,
-              flexShrink: 0,
-            }}
-            border="0.5px solid #ECF0F5"
-            parse="o:visible pa:10"
-          >
-            <Text
-              size={12}
-              weight="600"
-              css="simple-effing-month-label"
+              css="simple-effing-month-wrapper"
+              width={month.width}
               style={{
-                textTransform: "uppercase",
+                minHeight: _height,
+                borderLeftWidth: 0,
+                flexShrink: 0,
               }}
-              color="#D9DDE2"
+              border="0.5px solid #ECF0F5"
+              parse="o:visible pa:10"
             >
-              {month.label}
-            </Text>
-          </Box>
-        ))}
+              <Text
+                size={12}
+                weight="600"
+                css="simple-effing-month-label"
+                style={{
+                  textTransform: "uppercase",
+                }}
+                color="#D9DDE2"
+              >
+                {month.label}
+              </Text>
+            </Box>
+          ))}
+        </Box>
       </Box>
+      {_configuraton?.legends?.display ? (
+        <Box parse="d:flex a:center j:flex-end fw:wrap mt:20">
+          {legends.map((legend) => (
+            <Box
+              parse="ml:10 d:inline-flex a:center"
+              key={legend.key}
+              press={() => {
+                if (hide.includes(legend.key)) {
+                  _hide(Lodash.without(hide, legend.key));
+                } else {
+                  _hide([...hide, legend.key]);
+                }
+              }}
+            >
+              <Box
+                parse="w:15 h:15 br:5 mr:5"
+                color={
+                  hide.includes(legend.key) ? "#90959E" : legend.background
+                }
+              />
+              <Text
+                color="#000000"
+                opacity={hide.includes(legend.key) ? 0.5 : 1}
+                size={12}
+                line={15}
+                weight={500}
+              >
+                {legend.title}
+              </Text>
+            </Box>
+          ))}
+        </Box>
+      ) : undefined}
     </Box>
   );
 };
