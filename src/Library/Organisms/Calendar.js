@@ -18,6 +18,7 @@ const CalendarConfiguraton = {
     display: true,
   },
   categories: {},
+  today: "Today",
 };
 
 const Calendar = ({
@@ -30,10 +31,11 @@ const Calendar = ({
   const [error, _error] = useState(false);
   const [months, _months] = useState([]);
   const [hide, _hide] = useState([]);
+  const [today, _today] = useState(false);
 
   const _configuraton = { ...CalendarConfiguraton, ...configuraton };
   const _events = Lodash.sortBy(events, ["start"]);
-  const _height = _configuraton.height;
+  let _height = _configuraton.height;
 
   const daysInBetween = (first, last) => {
     try {
@@ -113,7 +115,9 @@ const Calendar = ({
           onSameMonth(_event.start, _control.start) ||
           onSameMonth(_event.end, _control.end)
         ) {
-          overrides = true;
+          if (_event.id != _control.id) {
+            overrides = true;
+          }
         }
       });
 
@@ -166,7 +170,7 @@ const Calendar = ({
     const _firstEvent = Moment(_events[0].start);
     const _lastEvent = Moment(_events[_events.length - 1].start);
     const _monthsDifference =
-      Math.ceil(_lastEvent.diff(_firstEvent, "months", true)) + 2;
+      Math.ceil(_lastEvent.diff(_firstEvent, "months", true)) + 4;
     _startPoint = _firstEvent.subtract(1, "months");
 
     useEffect(() => {
@@ -190,6 +194,13 @@ const Calendar = ({
         moments.push(moment);
       }
       _months(moments);
+
+      _today(
+        pixel(
+          _startPoint.format("YYYY-MM-") + "01",
+          Moment().format("YYYY-MM-DD")
+        )
+      );
     }, [events]);
   }
 
@@ -201,16 +212,67 @@ const Calendar = ({
     });
   }
 
+  _height = +_transform.steps * 75 + 100;
+
   return (
     <Box width={_configuraton.width} {..._configuraton.wrapper}>
       <Box
         border={_configuraton.border}
         height={_configuraton.height + 1}
         radius={_configuraton.radius}
-        overflow="hidden"
-        style={{ overflowX: "auto" }}
+        overflow="auto"
+        style={{
+          minHeight: _configuraton.height + 1,
+        }}
+        scroll={
+          today
+            ? {
+                left: today - _configuraton.month,
+              }
+            : undefined
+        }
       >
         <Box display="flex" position="relative">
+          {today ? (
+            <>
+              <Box
+                parse="p:absolute t:0 w:2"
+                style={{
+                  left: today,
+                  height: _height,
+                  borderRight: "2px dashed rgba(166,173,185,0.5)",
+                }}
+              >
+                <Box
+                  height={_height}
+                  parse="w:2 ox:visible oy:visible p:relative"
+                >
+                  <Box
+                    style={{
+                      transform: "translate(-50%, -50%)",
+                      position: "sticky",
+                      zIndex: 1,
+                    }}
+                    color
+                    parse="fd:column j:center a:center d:inline-flex p:absolute b:unset t:50% l:50% r:unset i:3"
+                  >
+                    <Box
+                      color="#D9DDE2"
+                      parse="oy:auto mb:4 br:999 h:10 w:10"
+                    />
+                    <Text
+                      color="#D9DDE2"
+                      size={12}
+                      weight="600"
+                      style={{ backgroundColor: "#FFFFFF", height: 12 }}
+                    >
+                      {_configuraton.today}
+                    </Text>
+                  </Box>
+                </Box>
+              </Box>
+            </>
+          ) : undefined}
           {_transform.events.map((item, i) => {
             return hide.includes(item.category) ? null : (
               <Event
@@ -230,6 +292,7 @@ const Calendar = ({
               width={month.width}
               style={{
                 minHeight: _height,
+                height: _height + 1,
                 borderLeftWidth: 0,
                 flexShrink: 0,
               }}
@@ -242,6 +305,8 @@ const Calendar = ({
                 css="simple-effing-month-label"
                 style={{
                   textTransform: "uppercase",
+                  position: "sticky",
+                  top: 10,
                 }}
                 color="#D9DDE2"
               >
