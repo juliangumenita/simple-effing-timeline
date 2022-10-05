@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Text } from "simple-effing-primitive-layout";
 
-import Event from "../Molecules/Event";
+import TimelineEvent from "../Molecules/TimelineEvent";
 
 import Lodash from "lodash";
 import Moment from "moment/min/moment-with-locales";
@@ -275,7 +275,7 @@ const Calendar = ({
           ) : undefined}
           {_transform.events.map((item, i) => {
             return hide.includes(item.category) ? null : (
-              <Event
+              <TimelineEvent
                 key={i}
                 top={item.steps * 75 <= 75 ? 75 : item.steps * 75}
                 left={pixel(_startPoint.format("YYYY-MM-") + "01", item.start)}
@@ -353,4 +353,4 @@ const Calendar = ({
   );
 };
 
-export default Calendar;
+export default Timeline;

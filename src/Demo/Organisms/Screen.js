@@ -1,38 +1,40 @@
 import { Box } from "simple-effing-primitive-layout";
-import Calendar from "../../Library/Organisms/Calendar";
+import Timeline from "../../Library/Organisms/Timeline";
 
 const Screen = ({ children }) => {
   return (
-    <Box parse="pa:100 ta:center">
-      <a href="https://github.com/juliangumenita/simple-effing-timeline">
-        <img
-          alt="simple-effing-timeline"
-          src="https://raw.githubusercontent.com/juliangumenita/simple-effing-timeline/main/src/Demo/Assets/Header.svg"
-        />
-      </a>
-      <br />
-      <div align="center">
-        <strong>Simple f*cking timeline for React.</strong>
-      </div>
-      <div align="center">Lightweight, customizable and super fast.</div>
-      <br />
-      <div align="center">
-        <a href="https://gumenita.com/">Website</a>
-        <span> · </span>
+    <Box parse="pa:100">
+      <Box parse="d:flex fd:column a:center">
         <a href="https://github.com/juliangumenita/simple-effing-timeline">
-          Documentation
+          <img
+            alt="simple-effing-timeline"
+            src="https://raw.githubusercontent.com/juliangumenita/simple-effing-timeline/main/src/Demo/Assets/Header.svg"
+          />
         </a>
-        <span> · </span>
-        <a href="https://www.instagram.com/juliangumenita/">Instagram</a>
-      </div>
-      <br />
-      <div align="center">
-        <sub>
-          Made by <a href="https://gumenita.com/">Julian Gumenita</a>‍
-        </sub>
-      </div>
+        <br />
+        <div align="center">
+          <strong>Simple f*cking timeline for React.</strong>
+        </div>
+        <div align="center">Lightweight, customizable and super fast.</div>
+        <br />
+        <div align="center">
+          <a href="https://gumenita.com/">Website</a>
+          <span> · </span>
+          <a href="https://github.com/juliangumenita/simple-effing-timeline">
+            Documentation
+          </a>
+          <span> · </span>
+          <a href="https://www.instagram.com/juliangumenita/">Instagram</a>
+        </div>
+        <br />
+        <div align="center">
+          <sub>
+            Made by <a href="https://gumenita.com/">Julian Gumenita</a>‍
+          </sub>
+        </div>
+      </Box>
       <Box parse="mt:100">
-        <Calendar
+        <Timeline
           configuraton={{
             categories: {
               design: {

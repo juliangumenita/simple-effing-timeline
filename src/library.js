@@ -1,2 +1,2 @@
-export { default as Calendar } from "./Library/Organisms/Calendar";
-export { default as Event } from "./Library/Molecules/Event";
+export { default as Timeline } from "./Library/Organisms/Timeline";
+export { default as TimelineEvent } from "./Library/Molecules/TimelineEvent";

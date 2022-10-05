@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Text } from "simple-effing-primitive-layout";
 import Moment from "moment/min/moment-with-locales";
 
-const Event = ({
+const TimelineEvent = ({
   item = {},
   top,
   left,
@@ -120,4 +120,4 @@ const Event = ({
   );
 };
 
-export default Event;
+export default TimelineEvent;

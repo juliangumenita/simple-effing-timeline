@@ -31,10 +31,10 @@ npm install --save simple-effing-timeline
 # Usage
 
 ```jsx
-import { Calendar } from "simple-effing-timeline";
+import { Timeline } from "simple-effing-timeline";
 
 ReactDOM.render(
-  <Calendar
+  <Timeline
     configuraton={{
       categories: {
         event: {
